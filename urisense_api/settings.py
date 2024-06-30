@@ -12,6 +12,13 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 
+# importing os module for environment variables
+import os
+# importing necessary functions from dotenv library
+from dotenv import load_dotenv, dotenv_values
+# loading variables from .env file
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,7 +32,7 @@ SECRET_KEY = 'django-insecure-ci2ad%q4djfvg&@-y^2=ecm$$ix0+k64lx0l9vneh%y-4d&@(^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['karanraj1324.pythonanywhere.com']
+ALLOWED_HOSTS = ['karanraj1324.pythonanywhere.com', '127.0.0.1']
 
 
 # Application definition
@@ -37,6 +44,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'rest_framework',
+    'django_filters',
+    'rest_framework_simplejwt',
+    'drf_yasg',
+    'action_serializer',
+
+
+    'image_processor',
+    'authentication'
 ]
 
 MIDDLEWARE = [
@@ -73,12 +90,7 @@ WSGI_APPLICATION = 'urisense_api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+
 
 
 # Password validation
@@ -115,7 +127,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -124,7 +135,56 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # default static files settings for PythonAnywhere.
 # see https://help.pythonanywhere.com/pages/DjangoStaticFiles for more info
-MEDIA_ROOT = '/home/karanraj1324/urisense_api/media'
-MEDIA_URL = '/media/'
-STATIC_ROOT = '/home/karanraj1324/urisense_api/static'
-STATIC_URL = '/static/'
+
+if os.environ.get('ENV') == 'localhost':
+    STATIC_URL = '/static/'
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = BASE_DIR/'media/'
+
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+
+else:
+    MEDIA_ROOT = '/home/karanraj1324/urisense_api/media'
+    MEDIA_URL = '/media/'
+    STATIC_ROOT = '/home/karanraj1324/urisense_api/static'
+    STATIC_URL = '/static/'
+
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'karanraj1324$urisense',
+        'USER': 'karanraj1324',
+        'PASSWORD': 'Karan@2004',
+        'HOST': 'karanraj1324.mysql.pythonanywhere-services.com', # Or an IP Address that your DB is hosted on
+        'PORT': '3306',
+    }
+}
+    
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
+
+LOGIN_URL = 'auth/api-auth/login'
+
+SWAGGER_SETTINGS = {
+
+        'USE_SESSION_AUTH': True,
+        'LOGIN_URL': LOGIN_URL,
+        'LOGOUT_URL':'/auth/logout/'
+
+}
