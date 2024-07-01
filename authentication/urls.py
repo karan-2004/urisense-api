@@ -6,7 +6,7 @@ from authentication.views import *
 urlpatterns = [
     path('login/', MyObtainTokenPairView.as_view(), name='token_obtain_pair'),
     path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('token/logout', LogoutView.as_view(), name='token_logout'),
+    path('token/logout/', LogoutView.as_view(), name='token_logout'),
     path('register/', RegisterView.as_view(), name='register'),
     path('logout/', logout, name='logout'),
     path('api-auth/', include('rest_framework.urls', namespace = 'restframework'))

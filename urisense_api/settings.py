@@ -32,7 +32,7 @@ SECRET_KEY = 'django-insecure-ci2ad%q4djfvg&@-y^2=ecm$$ix0+k64lx0l9vneh%y-4d&@(^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['karanraj1324.pythonanywhere.com', '127.0.0.1']
+ALLOWED_HOSTS = ['karanraj1324.pythonanywhere.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -47,7 +47,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'django_filters',
-    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'drf_yasg',
     'action_serializer',
     'corsheaders',
@@ -67,7 +67,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'urisense_api.urls'
 
@@ -135,6 +134,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 
 # default static files settings for PythonAnywhere.
 # see https://help.pythonanywhere.com/pages/DjangoStaticFiles for more info

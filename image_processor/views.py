@@ -9,6 +9,7 @@ from django.conf import settings
 from image_processor.serializers import *
 from image_processor.models import *
 from image_processor.utils import *
+from image_processor.perms import *
 
 
 
@@ -16,7 +17,7 @@ from image_processor.utils import *
 class TestViewset(ModelViewSet):
     serializer_class = TestSerializer
     # parser_classes = (MultiPartParser, FormParser)
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsOwner]
     http_method_names = ['get', 'post']
     filterset_fields = ['user']
     filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
