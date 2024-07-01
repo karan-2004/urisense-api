@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
-
+from datetime import timedelta
 # importing os module for environment variables
 import os
 # importing necessary functions from dotenv library
@@ -192,4 +192,9 @@ SWAGGER_SETTINGS = {
         'LOGIN_URL': LOGIN_URL,
         'LOGOUT_URL':'/auth/logout/'
 
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=10),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=20),
 }
